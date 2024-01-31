@@ -1,0 +1,35 @@
+preprocessor:
+  # Program used to preprocess C source files
+  #program: 'cpp'
+  arguments:
+    # - '-E'
+    - '-nostdinc'
+    - '-D__attribute__(x)='
+    - '-D__typeof__(x)=int'
+  #includes: []
+
+clang-tidy:
+  #program: 'clang-tidy'
+  includes:
+    - '/usr/lib/llvm-15/lib/clang/15.0.7/include'
+    - '/usr/include'
+
+doxygen:
+  program: 'doxygen'
+
+linters:
+  by-name:
+    - 'Utilisation de abort ou _Exit'
+    - 'Ne pas laisser de TODOs'
+  by-class:
+    - Undocumented
+    - FunctionDefinedInHeader
+    - GlobalDefinedInHeader
+    - UsingUnsafeTimeFunctions
+    - UsingUnsafeFunctions
+    - RedefiningStandardFunctions
+  by-reference:
+    - '[MISRA-C] : 21.8'
+    - '[CERT] : DCL37-C'
+    - '[CERT] : ERR34-C'
+    - '[CERT] : FLP30-C'
