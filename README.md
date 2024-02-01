@@ -1,4 +1,4 @@
-# Qualimetry: Generate reports on coding rule conformance
+# Qualamity: Generate reports on coding rule conformance
 
 This is a proof of concept developed in two weeks by a single person.
 It can be used to ensure that a given C code conforms to a set of coding rules.
@@ -20,10 +20,10 @@ pip install --requirement requirements.txt
 
 ## Usage
 
-The intended usage is from your C project root, with a `.qualimetry.yaml` listing the rules you are interested in.
+The intended usage is from your C project root, with a `.qualamity.yaml` listing the rules you are interested in.
 
 ```console
-$ python -m qualimetry --help
+$ python -m qualamity --help
 
 usage: __main__.py [-h] [-c CONFIG] [-l LOGGING_CONFIG] [-I [INCLUDES ...]] [-f FORMAT] PATH [PATH ...]
 
@@ -48,9 +48,8 @@ options:
 
 Code that tries to violate every rule is provided in the `example` directory.
 
-From within the directory, a PDF report can be generated:
+A PDF report can be generated from this directory:
 ```bash
-PYTHONPATH=".." python -m qualimetry . -f latex -c ../.qualimetry.yaml -I include > report.tex
-tectonic report.tex
-xdg-open report.pdf
+make pdf
+xdg-open example.pdf
 ```

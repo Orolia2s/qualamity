@@ -1,4 +1,8 @@
-Executable := example.exe
+Name       := example
+Executable := $(Name).exe
+ReportMD   := README.md
+ReportTex  := $(Name).tex
+ReportPDF  := $(Name).pdf
 
 ImplementationFolder := src
 InterfaceFolder      := include
@@ -9,11 +13,24 @@ Objects := $(Sources:%.c=%.o)
 CPPFLAGS += -I $(InterfaceFolder)
 CFLAGS   += -g
 
+build: $(Executable)
+pdf: $(ReportPDF)
+markdown: $(ReportMD)
+
+clean:
+	$(RM) $(Objects) $(ReportTex)
+
+remove: clean
+	$(RM) $(ReportMD) $(ReportPDF) $(Executable)
+
 $(Executable): $(Objects)
 	$(CC) $(CFLAGS) $(LDLFLAGS) $^ $(LDLIBS) -o $@
 
-report:
-	PYTHONPATH='..' python -m qualamity -c ../.qualamity.yaml . -I include > README.md
+$(ReportMD):
+	PYTHONPATH='..' python -m qualamity -c ../.qualamity.yaml . -I include > $@
 
-clean:
-	$(RM) $(Objects)
+$(ReportTex):
+	PYTHONPATH='..' python -m qualamity -f latex -c ../.qualamity.yaml . -I include > $@
+
+$(ReportPDF): $(ReportTex)
+	tectonic $<

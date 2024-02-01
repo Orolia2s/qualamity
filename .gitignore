@@ -2,3 +2,5 @@
 .env
 *.o
 *.exe
+*.tex
+*.pdf

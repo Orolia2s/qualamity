@@ -34,21 +34,21 @@ def to_latex(string: str) -> str:
 
 def report_list_to_latex(output: TextIO, reports: list[Report]):
     with BookTabularX(output, 'llrrX', ['Name', 'File', 'L.', 'C.', r"Details"], '25.5cm') as tabular:
-        prev_code = prev_file = None
+        prev_name = prev_file = None
         i = 0
         for report in sorted(reports, key = report_order):
-            code = file = ''
-            if report.location.file != prev_file or report.rule.name != prev_code:
+            name = file = ''
+            if report.location.file != prev_file or report.rule.name != prev_name:
                 prev_file = report.location.file
                 file = Font.verbatim_typewriter(report.location.file, fancy = False)
-                if report.rule.name != prev_code:
-                    prev_code = report.rule.name
-                    code = Font.verbatim_typewriter(report.rule.name, fancy = False)
+                if report.rule.name != prev_name:
+                    prev_name = report.rule.name
+                    name = report.rule.name.replace('_', r'\_')
                     i += 1
             if i % 2:
                 tabular.write_line(r'\rowcolor{gray!10}')
             col = report.location.column if report.location.column else ''
-            tabular.add_line([code, file, report.location.line, col, to_latex(report.details)])
+            tabular.add_line([name, file, report.location.line, col, to_latex(report.details)])
 
 def report_to_latex(output: TextIO, reports: list[Report], cpp: Program, ctidy: Program, doxy: Program):
     with open(assets.joinpath('preambule.tex')) as preambule:
@@ -64,9 +64,9 @@ def report_to_latex(output: TextIO, reports: list[Report], cpp: Program, ctidy: 
         with Table(out, 'h', "Tools") as table:
             with Center(table) as center:
                 with BookTabular(center, 'lll', ['Description', 'Command', 'Version']) as tabular:
-                    tabular.add_line(['C Preprocessor', Font.verbatim_typewriter(cpp), Font.verbatim_typewriter(getoutput(f'{cpp.executable} --version | head -1'))])
-                    tabular.add_line(['C Linter', Font.verbatim_typewriter(ctidy), Font.verbatim_typewriter(getoutput(f'{ctidy.executable} --version | head -2 | tail -1').strip())])
-                    tabular.add_line(['Documentation parser', Font.verbatim_typewriter(doxy), Font.verbatim_typewriter(getoutput(f'{doxy.executable} --version').strip())])
+                    tabular.add_line(['C Preprocessor', Font.verbatim_typewriter(cpp.executable), Font.verbatim_typewriter(getoutput(f'{cpp.executable} --version | head -1'))])
+                    tabular.add_line(['C Linter', Font.verbatim_typewriter(ctidy.executable), Font.verbatim_typewriter(getoutput(f'{ctidy.executable} --version | head -2 | tail -1').strip())])
+                    tabular.add_line(['Documentation parser', Font.verbatim_typewriter(doxy.executable), Font.verbatim_typewriter(getoutput(f'{doxy.executable} --version').strip())])
         out.write_line(chapter("Result"))
         out.write_line(f'A total of {len(reports)} violations were identified:')
         with Landscape(out) as out:
