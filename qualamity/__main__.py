@@ -8,7 +8,7 @@ import yaml
 
 from qualamity import (CLinter, Program, Undocumented, assets, get_clang_tidy,
                        get_doxygen, get_preprocessor, load_linters,
-                       report_list_to_csv, report_list_to_latex,
+                       report_list_to_csv, report_list_to_json,
                        report_list_to_markdown, report_to_latex)
 
 default_logging_file = assets.joinpath('logging.yaml')
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     cli_parser.add_argument('-c', '--config', type=str, default='.qualamity.yaml', help='Config file to retrieve lint list from')
     cli_parser.add_argument('-l', '--logging-config', type=str, default=default_logging_file, help='Config file of the logging library')
     cli_parser.add_argument('-I', '--includes', type=str, nargs='*', default=[], help='Add folder to look for headers in')
-    cli_parser.add_argument('-f', '--format', type=str, default='markdown', help='Output format: can be markdown, latex, or csv')
+    cli_parser.add_argument('-f', '--format', type=str, default='markdown', help='Output format: can be markdown, latex, json, or csv')
     args = cli_parser.parse_args()
 
     logging_config_file = Path(args.logging_config)
@@ -60,5 +60,7 @@ if __name__ == '__main__':
                 report_to_latex(sys.stdout, reports, cpp, ctidy, doxygen)
             case 'csv':
                 report_list_to_csv(sys.stdout, reports)
+            case 'json':
+                report_list_to_json(sys.stdout, reports)
             case _:
                 raise RuntimeError(f'Unknown format {args.format}')

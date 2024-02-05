@@ -41,7 +41,7 @@ options:
   -I [INCLUDES ...], --includes [INCLUDES ...]
                         Add folder to look for headers in
   -f FORMAT, --format FORMAT
-                        Output format: can be markdown, latex, or csv
+                        Output format: can be markdown, latex, json, or csv
 ```
 
 ### Example

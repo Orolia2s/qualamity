@@ -1,4 +1,5 @@
 import csv
+import json
 import platform
 import re
 import shlex
@@ -85,6 +86,12 @@ def report_list_to_json(output: TextIO, reports: list[Report]):
     result = []
     for report in reports:
         result.append({
-            'check_name': report.rule.name,
+            'check_name': report.rule.__name__,
             'content': {'body': report.rule.description},
+            'location': {
+                'path': report.location.file,
+                'lines': {'begin': report.location.line},
+            },
+            'description': report.details
         })
+    json.dump(result, output)
