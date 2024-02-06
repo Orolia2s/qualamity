@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/23.11";
   };
 
   outputs = {
@@ -20,7 +20,7 @@
       ]);
     in {
       devShells.default = pkgs.mkShell {
-        packages = with pkgs; [doxygen clang-tools_17 python_packages tectonic];
+        packages = with pkgs; [doxygen python_packages tectonic];
       };
     });
 }
