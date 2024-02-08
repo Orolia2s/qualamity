@@ -25,7 +25,8 @@ The intended usage is from your C project root, with a `.qualamity.yaml` listing
 ```console
 $ python -m qualamity --help
 
-usage: __main__.py [-h] [-c CONFIG] [-l LOGGING_CONFIG] [-I [INCLUDES ...]] [-f FORMAT] PATH [PATH ...]
+usage: __main__.py [-h] [-c CONFIG] [-l LOGGING_CONFIG] [-I [INCLUDES ...]] [-f FORMAT]
+                   PATH [PATH ...]
 
 Scan files to check conformance with coding rules
 
@@ -35,13 +36,13 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   -c CONFIG, --config CONFIG
-                        Config file to retrieve lint list from
+                        Config file to retrieve lint list from. Defaults to ".qualamity.yaml"
   -l LOGGING_CONFIG, --logging-config LOGGING_CONFIG
-                        Config file of the logging library
+                        Specify a custom config file of the logging library
   -I [INCLUDES ...], --includes [INCLUDES ...]
                         Add folder to look for headers in
   -f FORMAT, --format FORMAT
-                        Output format: can be markdown, latex, json, or csv
+                        Output format: can be markdown, latex, json, github or csv. Defaults to markdown
 ```
 
 ### Example

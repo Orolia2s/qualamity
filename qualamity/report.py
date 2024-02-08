@@ -70,10 +70,10 @@ def report_to_latex(output: TextIO, reports: list[Report], cpp: Program, ctidy: 
                     tabular.add_line(['Documentation parser', Font.verbatim_typewriter(doxy.executable), Font.verbatim_typewriter(getoutput(f'{doxy.executable} --version').strip())])
         out.write_line(chapter("Result"))
         out.write_line(f'A total of {len(reports)} violations were identified:')
-        with Landscape(out) as out:
-            with Small(out) as out:
-                with Center(out) as out:
-                    report_list_to_latex(out, reports)
+        with Landscape(out) as landscape:
+            with Small(landscape) as small:
+                with Center(small) as center:
+                    report_list_to_latex(center, reports)
 
 def report_list_to_csv(output: TextIO, reports: list[Report]):
     writer = csv.writer(output, quoting = csv.QUOTE_NONNUMERIC)
@@ -89,9 +89,18 @@ def report_list_to_json(output: TextIO, reports: list[Report]):
             'check_name': report.rule.__name__,
             'content': {'body': report.rule.description},
             'location': {
-                'path': report.location.file,
+                'path': str(report.location.file),
                 'lines': {'begin': report.location.line},
             },
             'description': report.details
         })
     json.dump(result, output)
+    output.write('\n')
+
+def report_list_to_github(output: TextIO, reports: list[Report]):
+    for report in reports:
+        command = f'::notice file={report.location.file},line={report.location.line}'
+        if report.location.column:
+            command += f',col={report.location.column}'
+        command += f',title={report.rule.name}::{report.details}\n'
+        output.write(command)

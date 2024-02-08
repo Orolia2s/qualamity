@@ -36,7 +36,7 @@ class Linter:
         elif fnmatch(path.name, self.extension):
             self.scan_file(path)
         else:
-            self.log.info(f'Skipping {path}')
+            self.log.info(f'{self.__name__}: skipping {path}')
         return self.reports
 
 class CLinter(Linter):

@@ -1,8 +1,8 @@
 import logging
 from collections import defaultdict
 
-from .linter import Linter
 from .builtin_rules import __all__ as rules
+from .linter import Linter
 
 
 def find_linters_by(field: str, wanted: list[str]) -> list:
