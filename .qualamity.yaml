@@ -22,7 +22,6 @@ linters:
     - 'Utilisation de abort ou _Exit'
     - 'Ne pas laisser de TODOs'
   by-class:
-    - Undocumented
     - FunctionDefinedInHeader
     - GlobalDefinedInHeader
     - UsingUnsafeTimeFunctions
