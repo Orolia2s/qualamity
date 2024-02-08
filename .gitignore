@@ -1,6 +1,7 @@
-*.pyc
+*.csv
 .env
-*.o
 *.exe
-*.tex
+*.o
 *.pdf
+*.pyc
+*.tex
