@@ -12,24 +12,27 @@ from .linter import Linter
 
 class Undocumented(Linter):
     name = "Documenter l'ensemble des declarations top-level"
-    code = 'EX_CS_DOCUMENT_C'
     description = "il faut documenter les fonctions, structures, membres, enumerations et types"
-    extension = '*.c'
-    expression = re.compile(r'[^:]*?:(\d+):[^:]*?:\s*\w+\s+(\w+)(\[\d+\]|\([^)]*\))?\s+\((\w+)\)')
+    expression = re.compile(r'([^:]*?):(\d+):[^:]*?:\s*\w+\s+(\w+)(\[\d+\]|\([^)]*\))?\s+\((\w+)\)')
     translate = {
         'function': 'La fonction',
         'variable': 'La variable',
-        'enumeration': "L'énumération"
+        'enumeration': "L'énumération",
+        'typedef': 'Le type'
     }
 
     def __init__(self, doxygen: Program):
         super().__init__()
         self.doxygen = doxygen
 
-    def scan_file(self, path: Path):
+    def scan(self, path: Path | str):
+        if not isinstance(path, Path):
+            path = Path(path)
         os.environ['INPUT'] = str(path)
         warnings = run([self.doxygen.executable, assets.joinpath('doxygen.conf')], check=True, stdout=DEVNULL, stderr=PIPE, encoding='utf8').stderr
         for warning in warnings.split('\n'):
             match = self.expression.match(warning)
             if match:
-                self.report(Coord(path, int(match[1])), f"{self.translate[match[4]]} `{match[2]}` n'est pas documentée")
+                location = Path(match[1]).relative_to(path.absolute())
+                self.report(Coord(location, int(match[2])), f"{self.translate[match[5]]} `{match[3]}` n'est pas documentée")
+        return self.reports
