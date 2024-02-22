@@ -41,6 +41,10 @@ if __name__ == '__main__':
         doxygen = get_doxygen(config)
 
         reports = []
+        if Undocumented in linters:
+            # While most linters apply to a single file at a time, doxygen needs to parse both headers and sources
+            # to know if a fuction is documented. So it is only called once, and will scan all applicable files
+            reports += Undocumented(doxygen).scan_all(args.paths)
         for path in map(Path, args.paths):
             if not path.exists():
                 logger.error(f'No such file or directory: "{path}"')
@@ -49,8 +53,6 @@ if __name__ == '__main__':
             for linter in linters:
                 if issubclass(linter, CLinter):
                     reports += linter(cpp).scan(path)
-                elif issubclass(linter, Undocumented):
-                    reports += linter(doxygen).scan(path)
                 else:
                     reports += linter().scan(path)
 
