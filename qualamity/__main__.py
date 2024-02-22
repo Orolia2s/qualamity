@@ -45,6 +45,7 @@ if __name__ == '__main__':
             # While most linters apply to a single file at a time, doxygen needs to parse both headers and sources
             # to know if a fuction is documented. So it is only called once, and will scan all applicable files
             reports += Undocumented(doxygen).scan_all(args.paths)
+            linters.remove(Undocumented)
         for path in map(Path, args.paths):
             if not path.exists():
                 logger.error(f'No such file or directory: "{path}"')

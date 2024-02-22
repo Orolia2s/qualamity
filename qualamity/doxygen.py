@@ -25,14 +25,12 @@ class Undocumented(Linter):
         super().__init__()
         self.doxygen = doxygen
 
-    def scan(self, path: Path | str):
-        if not isinstance(path, Path):
-            path = Path(path)
-        os.environ['INPUT'] = str(path)
+    def scan_all(self, paths: list[str]):
+        os.environ['INPUT'] = ' '.join(map(str, paths))
         warnings = run([self.doxygen.executable, assets.joinpath('doxygen.conf')], check=True, stdout=DEVNULL, stderr=PIPE, encoding='utf8').stderr
         for warning in warnings.split('\n'):
             match = self.expression.match(warning)
             if match:
-                location = Path(match[1]).relative_to(path.absolute())
+                location = Path(match[1]).relative_to(Path('.').absolute())
                 self.report(Coord(location, int(match[2])), f"{self.translate[match[5]]} `{match[3]}` n'est pas documentée")
         return self.reports
