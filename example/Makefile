@@ -3,6 +3,7 @@ Executable := $(Name).exe
 ReportMD   := README.md
 ReportTex  := $(Name).tex
 ReportPDF  := $(Name).pdf
+ReportCSV  := report.csv
 
 ImplementationFolder := src
 InterfaceFolder      := include
@@ -25,6 +26,9 @@ remove: clean
 
 $(Executable): $(Objects)
 	$(CC) $(CFLAGS) $(LDLFLAGS) $^ $(LDLIBS) -o $@
+
+$(ReportCSV):
+	PYTHONPATH='..' python -m qualamity -c ../.qualamity.yaml . -I include -f csv > $@
 
 $(ReportMD):
 	PYTHONPATH='..' python -m qualamity -c ../.qualamity.yaml . -I include > $@
