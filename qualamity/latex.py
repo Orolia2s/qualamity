@@ -63,9 +63,6 @@ class Center(Environment):
 class Enumerate(Environment):
     name = 'enumerate'
 
-    def __init__(self, parent: TextIO | Environment):
-        super().__init__(parent)
-
     def add(self, item):
         self.write_line(r'\item ' + str(item))
 
@@ -77,7 +74,7 @@ class Multicols(Environment):
 
     def __init__(self, parent: TextIO | Environment, columns_count: int):
         self.args = [columns_count]
-        super().__init__(out)
+        super().__init__(parent)
 
 class Table(Environment):
     name = 'table'
