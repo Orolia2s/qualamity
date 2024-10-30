@@ -66,6 +66,12 @@ class UsingUnsafeFunctions(UsingForbiddenEnvironmentFunctions):
     description = "Utiliser memset_s au lieu de memset"
     forbidden = {'memset'}
 
+class UsingSignal(UsingForbiddenEnvironmentFunctions):
+    name = "Il ne faut pas utiliser la fonction signal"
+    reference = ['[CERT] : SIG34-C', '[CERT] : CON37-C', '[MISRA-C] : 21.5']
+    description = "Utiliser sigaction au lieu de signal"
+    forbidden = {'signal'}
+
 class UsingUnsafeParseFunctions(UsingForbiddenEnvironmentFunctions):
     name = "Utilisation de atoi et dérivées"
     reference = ['[CERT] : ERR07-C', '[CERT] : ERR34-C', '[MISRA-C] : 21.7']
@@ -100,5 +106,5 @@ class UncompletedTodos(Linter):
                     self.report(Coord(path, i, match.start()), f'à faire: `{line[match.start():-1]}`')
 
 __all__ = [FunctionDefinedInHeader, GlobalDefinedInHeader, UsingForbiddenEnvironmentFunctions,
-           UsingForbiddenExitFunctions, UsingUnsafeTimeFunctions, UsingUnsafeFunctions,
+           UsingForbiddenExitFunctions, UsingUnsafeTimeFunctions, UsingUnsafeFunctions, UsingSignal,
            UsingUnsafeParseFunctions, RedefiningStandardFunctions, UncompletedTodos, Undocumented]
