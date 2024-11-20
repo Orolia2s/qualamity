@@ -82,7 +82,7 @@ def report_list_to_csv(output: TextIO, reports: list[Report]):
         writer.writerow([report.rule.__name__, report.rule.name, report.location.file, report.location.line,
                          report.location.column, report.details, report.rule.description])
 
-def report_list_to_json(output: TextIO, reports: list[Report]):
+def report_list_to_gitlab(output: TextIO, reports: list[Report]):
     result = []
     for report in reports:
         result.append({
@@ -95,6 +95,33 @@ def report_list_to_json(output: TextIO, reports: list[Report]):
             'description': report.details
         })
     json.dump(result, output)
+    output.write('\n')
+
+def report_list_to_sonarqube(linters: list, output: TextIO, reports: list[Report]):
+    rules = []
+    for linter in linters:
+        rules.append({
+            'id': linter.__name__,
+            'name': linter.name,
+            'description': linter.description,
+            'engineId': 'lintO2s',
+            'cleanCodeAttribute': 'CONVENTIONAL',
+            'impacts': [],
+        })
+    issues = []
+    for report in reports:
+        issues.append({
+            'id': report.rule.__name__,
+            'primaryLocation': {
+                'message': report.details,
+                'filePath': str(report.location.file),
+                'textRange': {
+                    'startLine': report.location.line,
+                    'startColumn': report.location.column,
+                },
+            }
+        })
+    json.dump({'rules': rules, 'issues': issues}, output)
     output.write('\n')
 
 def report_list_to_github(output: TextIO, reports: list[Report]):
