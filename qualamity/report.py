@@ -106,21 +106,28 @@ def report_list_to_sonarqube(linters: list, output: TextIO, reports: list[Report
             'description': linter.description,
             'engineId': 'lintO2s',
             'cleanCodeAttribute': 'CONVENTIONAL',
-            'impacts': [],
+            'impacts': [
+                {
+                    'softwareQuality': 'MAINTAINABILITY',
+                    'severity': 'MEDIUM',
+                }
+            ],
         })
     issues = []
     for report in reports:
-        issues.append({
-            'id': report.rule.__name__,
+        issue = {
+            'ruleId': report.rule.__name__,
             'primaryLocation': {
                 'message': report.details,
                 'filePath': str(report.location.file),
                 'textRange': {
                     'startLine': report.location.line,
-                    'startColumn': report.location.column,
                 },
             }
-        })
+        }
+        if (report.location.column):
+            issue['primaryLocation']['textRange']['startColumn'] = report.location.column
+        issues.append(issue)
     json.dump({'rules': rules, 'issues': issues}, output)
     output.write('\n')
 

@@ -69,6 +69,6 @@ if __name__ == '__main__':
             case 'github':
                 report_list_to_github(sys.stdout, reports)
             case 'sonarqube':
-                report_list_to_sonarqube(linters, sys.stdout, reports)
+                report_list_to_sonarqube(linters + [Undocumented], sys.stdout, reports)
             case _:
                 raise RuntimeError(f'Unknown format {args.format}')
