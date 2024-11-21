@@ -13,6 +13,8 @@ from .linter import CLinter, Linter
 class FunctionDefinedInHeader(CLinter):
     name = 'Implementation de fonctions dans un header'
     reference = '[CERT] : DCL31-C'
+    category = 'MAINTAINABILITY'
+    severity = 'MEDIUM'
     description = 'Il ne faut pas definir de fonction dans un header, seulement les declarer.'
     extension = '*.h'
 
@@ -25,6 +27,8 @@ class FunctionDefinedInHeader(CLinter):
 class GlobalDefinedInHeader(CLinter):
     name = 'Definition de variables dans un header'
     reference = '[MISRA-C++] : 3-1-1'
+    category = 'MAINTAINABILITY'
+    severity = 'LOW'
     description = "Il ne faut pas definir la valeur d'une variable dans un header, seulement la declarer en tant qu'externe."
     extension = '*.h'
 
@@ -38,6 +42,8 @@ class GlobalDefinedInHeader(CLinter):
 class UsingForbiddenEnvironmentFunctions(CLinter):
     name = "Utilisation de system ou getenv"
     reference = ['[CERT] : ENV01-C', '[CERT] : ENV02-C', '[CERT] : ENV33-C', '[MISRA-C] : 21.8']
+    category = 'SECURITY'
+    severity = 'MEDIUM'
     description = "Ne pas utiliser getenv ou system"
     forbidden = {'getenv', 'system'}
 
@@ -51,36 +57,48 @@ class UsingForbiddenEnvironmentFunctions(CLinter):
 class UsingForbiddenExitFunctions(UsingForbiddenEnvironmentFunctions):
     name = "Utilisation de abort ou _Exit"
     reference = ['[CERT] : ENV32-C', '[CERT] : ERR00-C', '[CERT] : ERR04-C', '[CERT] : ERR06-C']
+    category = 'SECURITY'
+    severity = 'MEDIUM'
     description = "Ne pas utiliser abort ou _Exit pour que les fonctions enregistrés avec atexit soient executés."
     forbidden = {'abort', '_Exit'}
 
 class UsingUnsafeTimeFunctions(UsingForbiddenEnvironmentFunctions):
     name = "Il faut utiliser les versions securisées des fonctions de time.h"
     reference = ['[CERT] : MSC33-C', '[MISRA-C] : 21.10']
+    category = 'RELIABILITY'
+    severity = 'HIGH'
     description = "Utiliser asctime_s au lieu de asctime, idem pour ctime, gmtime et localtime"
     forbidden = {'asctime', 'ctime', 'gmtime', 'localtime'}
 
 class UsingUnsafeFunctions(UsingForbiddenEnvironmentFunctions):
     name = "Il faut utiliser la version securisée de memset"
     reference = ['[CERT] : MSC06-C']
+    category = 'SECURITY'
+    severity = 'LOW'
     description = "Utiliser memset_s au lieu de memset"
     forbidden = {'memset'}
 
 class UsingSignal(UsingForbiddenEnvironmentFunctions):
     name = "Il ne faut pas utiliser la fonction signal"
     reference = ['[CERT] : SIG34-C', '[CERT] : CON37-C', '[MISRA-C] : 21.5']
+    category = 'RELIABILITY'
+    severity = 'MEDIUM'
     description = "Utiliser sigaction au lieu de signal"
     forbidden = {'signal'}
 
 class UsingUnsafeParseFunctions(UsingForbiddenEnvironmentFunctions):
     name = "Utilisation de atoi et dérivées"
     reference = ['[CERT] : ERR07-C', '[CERT] : ERR34-C', '[MISRA-C] : 21.7']
+    category = 'RELIABILITY'
+    severity = 'LOW'
     description = "Préférer strtol à atoi"
     forbidden = {'atof', 'atoi', 'atol', 'atoll'}
 
 class RedefiningStandardFunctions(CLinter):
     name = 'Ne pas redéfinir les fonctions standards'
     reference = ['[MISRA-C] : 21.1', '[MISRA-C] : 21.2']
+    category = 'MAINTAINABILITY'
+    severity = 'LOW'
     description = "Ne pas utiliser le nom d'une fonction standard pour nommer ses fonctions"
     forbidden = {line.removesuffix('\n') for line in assets.joinpath('standard_functions.txt').open('r')}
 
@@ -93,6 +111,8 @@ class RedefiningStandardFunctions(CLinter):
 
 class UncompletedTodos(Linter):
     name = 'Ne pas laisser de TODOs'
+    category = 'MAINTAINABILITY'
+    severity = 'MEDIUM'
     description = "Ne pas laisser dans le code des commentaires du type TODO."
     extension = '*.[ch]'
 

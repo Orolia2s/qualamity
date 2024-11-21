@@ -108,8 +108,8 @@ def report_list_to_sonarqube(linters: list, output: TextIO, reports: list[Report
             'cleanCodeAttribute': 'CONVENTIONAL',
             'impacts': [
                 {
-                    'softwareQuality': 'MAINTAINABILITY',
-                    'severity': 'MEDIUM',
+                    'softwareQuality': linter.category,
+                    'severity': linter.severity,
                 }
             ],
         })

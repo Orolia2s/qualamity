@@ -12,6 +12,8 @@ from .linter import Linter
 
 class Undocumented(Linter):
     name = "Documenter l'ensemble des declarations top-level"
+    category = 'MAINTAINABILITY'
+    severity = 'LOW'
     description = "il faut documenter les fonctions, structures, membres, enumerations et types"
     expression = re.compile(r'([^:]*?):(\d+):[^:]*?:\s*\w+\s+(\w+)(\[\d+\]|\([^)]*\))?\s+\((\w+)\)')
     translate = {
