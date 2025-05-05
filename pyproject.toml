@@ -1,13 +1,22 @@
 [project]
 name = "qualamity"
 version = "0.1.0"
-description = 'Static analysis tool for C '
+description = 'Static analysis tool for C'
+keywords = ['static analysis', 'c']
+readme = "README.md"
+authors = [{name = "Antoine GAGNIERE"}]
+license = 'MIT'
+license-files = ['LICENSE']
 requires-python = ">=3.11"
 dependencies = [
     "distro>=1.9.0",
     "pycparser>=2",
     "pyyaml>=6",
 ]
+
+[project.urls]
+Repository = "https://github.com/Orolia2s/qualamity"
+Issues = "https://github.com/Orolia2s/qualamity/issues"
 
 [project.scripts]
 qualamity = 'qualamity.__main__:main'

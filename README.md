@@ -20,8 +20,8 @@ The intended usage is from your C project root, with a `.qualamity.yaml` listing
 ```console
 $ qualamity --help
 
-usage: __main__.py [-h] [-c CONFIG] [-l LOGGING_CONFIG] [-I [INCLUDES ...]] [-f FORMAT]
-                   PATH [PATH ...]
+usage: qualamity [-h] [-c CONFIG] [-l LOGGING_CONFIG] [-I [INCLUDES ...]] [-f FORMAT]
+                 PATH [PATH ...]
 
 Scan files to check conformance with coding rules
 
