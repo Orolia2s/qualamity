@@ -15,6 +15,9 @@ from qualamity import (CLinter, Program, Undocumented, assets, get_clang_tidy,
 default_logging_file = assets.joinpath('logging.yaml')
 
 if __name__ == '__main__':
+    main()
+
+def main():
     cli_parser = ArgumentParser(description = 'Scan files to check conformance with coding rules')
     cli_parser.add_argument('paths', metavar='PATH', type=str, nargs='+', help='Files and directories to scan')
     cli_parser.add_argument('-c', '--config', type=str, default='.qualamity.yaml', help='Config file to retrieve lint list from. Defaults to ".qualamity.yaml"')

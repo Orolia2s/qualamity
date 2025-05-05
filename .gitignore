@@ -1,7 +1,9 @@
+build
 *.csv
-.env
+*.egg-info
 *.exe
 *.o
 *.pdf
 *.pyc
 *.tex
+.venv

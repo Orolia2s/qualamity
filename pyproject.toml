@@ -1,0 +1,27 @@
+[project]
+name = "qualamity"
+version = "0.1.0"
+description = 'Static analysis tool for C '
+requires-python = ">=3.11"
+dependencies = [
+    "distro>=1.9.0",
+    "pycparser>=2",
+    "pyyaml>=6",
+]
+
+[project.scripts]
+qualamity = 'qualamity.__main__:main'
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+required-version = ">= 0.7.0"
+package = true
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "qualamity/*.py",
+  "qualamity/assets/*",
+]

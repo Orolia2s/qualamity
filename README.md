@@ -3,19 +3,14 @@
 This is a proof of concept developed in two weeks by a single person.
 It can be used to ensure that a given C code conforms to a set of coding rules.
 
-## Dependencies
+## Requirement
 
-Dependencies are handled by [Nix](https://nixos.org/download), just type the following command from within this repository before use:
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+
+## Installation
 
 ```bash
-nix develop
-```
-
-### Python
-
-If you are not using nix, you can still install python dependencies:
-```bash
-pip install --requirement requirements.txt
+uv tool install git+https://github.com/Orolia2s/qualamity
 ```
 
 ## Usage
@@ -23,7 +18,7 @@ pip install --requirement requirements.txt
 The intended usage is from your C project root, with a `.qualamity.yaml` listing the rules you are interested in.
 
 ```console
-$ python -m qualamity --help
+$ qualamity --help
 
 usage: __main__.py [-h] [-c CONFIG] [-l LOGGING_CONFIG] [-I [INCLUDES ...]] [-f FORMAT]
                    PATH [PATH ...]
