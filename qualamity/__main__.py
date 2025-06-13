@@ -14,15 +14,12 @@ from qualamity import (CLinter, Program, Undocumented, assets, get_clang_tidy,
 
 default_logging_file = assets.joinpath('logging.yaml')
 
-if __name__ == '__main__':
-    main()
-
 def main():
     cli_parser = ArgumentParser(description = 'Scan files to check conformance with coding rules')
     cli_parser.add_argument('paths', metavar='PATH', type=str, nargs='+', help='Files and directories to scan')
     cli_parser.add_argument('-c', '--config', type=str, default='.qualamity.yaml', help='Config file to retrieve lint list from. Defaults to ".qualamity.yaml"')
     cli_parser.add_argument('-l', '--logging-config', type=str, default=default_logging_file, help='Specify a custom config file of the logging library')
-    cli_parser.add_argument('-I', '--includes', type=str, nargs='*', default=[], help='Add folder to look for headers in')
+    cli_parser.add_argument('-I', '--include', dest='includes', metavar='FILE', type=str, action='append', default=[], help='Add folder to look for headers in')
     cli_parser.add_argument('-f', '--format', type=str, default='markdown', help='Output format: can be markdown, latex, sonarqube, gitlab, github or csv. Defaults to markdown')
     args = cli_parser.parse_args()
 
@@ -31,6 +28,7 @@ def main():
         logging.config.dictConfig(yaml.safe_load(f))
     logger = logging.getLogger(__package__)
 
+    logger.info(f'Starting qualamity, searching headers in {args.includes}')
     config_file = Path(args.config)
     if not config_file.exists():
         logger.error(f'The specified configuration file "{config_file}" does not exist')
@@ -75,3 +73,6 @@ def main():
                 report_list_to_sonarqube(linters + [Undocumented], sys.stdout, reports)
             case _:
                 raise RuntimeError(f'Unknown format {args.format}')
+
+if __name__ == '__main__':
+    main()
